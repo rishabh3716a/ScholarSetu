@@ -35,11 +35,12 @@
       <div><strong>Unified Scholarship</strong><span>Platform for Tribal Students</span></div>
     </div>
     <nav id="sideNav" class="nav"></nav>
-    <div class="side-card">
-      <div class="row"><span>Profile</span><b id="sidePct">0%</b></div>
+    <div class="pcard">
+      <div class="who"><span class="ava" id="sideAva">S</span><div><b id="sideName">Student</b><small id="sideLevel"></small></div></div>
       <div class="meter on-dark"><i id="sideBar"></i></div>
-      <p>SIH 2025 · PS 26238<br>Prototype with demo data</p>
+      <div class="row"><span>Profile</span><b id="sidePct">0%</b></div>
     </div>
+    <div class="quote">One student • One profile • One journey</div>
   </aside>
 
   <header class="top">
@@ -56,7 +57,7 @@
     <section id="view-dashboard" class="view" data-title="Dashboard"></section>
 
     <section id="view-discover" class="view" data-title="Discover Scholarships" hidden>
-      <div class="page-head"><h1>Discover scholarships</h1><p>Matched against your profile, so you don't have to read every scheme.</p></div>
+      <div class="page-head"><h1>Scholarships for you</h1><p>Matched to your profile, so you don't have to read every scheme.</p></div>
       <div class="tools">
         <label class="search"><svg class="i"><use href="#i-search"/></svg>
           <input id="q" type="search" placeholder="Search by name, category or keyword" autocomplete="off" aria-label="Search scholarships">
@@ -69,6 +70,7 @@
 
     <section id="view-profile" class="view" data-title="My Profile" hidden>
       <div class="page-head"><h1>My profile</h1><p>Fill this once. Every scholarship check uses it.</p></div>
+      <div id="pfHead"></div>
       <div class="split">
         <form id="profileForm" class="card form" novalidate></form>
         <aside class="card">
@@ -82,12 +84,12 @@
 
     <section id="view-vault" class="view" data-title="Document Vault" hidden>
       <div class="page-head"><h1>Document vault</h1><p>Upload once. Reuse across schemes wherever permitted.</p></div>
-      <div class="grid" id="vault"></div>
+      <div id="vaultHead"></div><div class="grid" id="vault"></div>
     </section>
 
     <section id="view-tracker" class="view" data-title="Application Tracker" hidden>
       <div class="page-head"><h1>Application tracker</h1><p>See where each application stands and what to do next.</p></div>
-      <div class="stack" id="apps"></div>
+      <div id="trHead"></div><div class="stack" id="apps"></div>
     </section>
 
     <footer class="foot">One student • One profile • One journey &nbsp;|&nbsp; SIH 2025 · PS 26238 · Prototype</footer>
