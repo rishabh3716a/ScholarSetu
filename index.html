@@ -3,103 +3,557 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Unified Scholarship Platform for Tribal Students | SIH 26238</title>
-<meta name="description" content="Prototype: One student, one profile, one journey. SIH 2025 Problem Statement 26238.">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="css/style.css">
+<title>ScholarSetu | Unified Scholarship Platform for Tribal Students</title>
+<meta name="description" content="SIH 26238 prototype: one student, one profile, one journey.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2312305a'/%3E%3Cpath d='M10 40c6-18 38-18 44 0M10 44h44M20 30v14M32 26v18M44 30v14' fill='none' stroke='%231a9278' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root{--navy:#12305a;--navy2:#0e2748;--teal:#1a9278;--tealD:#137a63;--mint:#e4f4ef;--bg:#f2f5f9;--ink:#17263d;--mut:#5a6b82;--line:#dde4ee;--amber:#8f6210;--amberBg:#fdf3dc;--red:#b4413a;--redBg:#fbe9e7;--blueBg:#e6f0fa;--blue:#0b5a95;--r:16px;--sh:0 1px 2px rgba(18,48,90,.06),0 6px 18px rgba(18,48,90,.06)}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font:15px/1.55 "Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg)}
+h1,h2,h3,p{margin:0}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid rgba(26,146,120,.55);outline-offset:2px;border-radius:8px}
+.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+body.lock{overflow:hidden}
+.mut{color:var(--mut)}
+
+/* shell */
+.shell{display:flex;min-height:100vh}
+.side{width:262px;flex:none;background:var(--navy);color:#cfdcf0;position:sticky;top:0;height:100vh;padding:20px 14px;display:flex;flex-direction:column;gap:20px}
+.brand{display:flex;align-items:center;gap:10px;padding:0 4px}
+.brand svg{width:40px;height:40px;flex:none}
+.brand b{display:block;color:#fff;font-size:18px;line-height:1.1}
+.brand small{font-size:11.5px;color:#9fb4d3}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav button{display:flex;align-items:center;gap:12px;border:0;background:none;color:#cfdcf0;padding:11px 12px;border-radius:12px;text-align:left;font-weight:500;width:100%}
+.nav button:hover{background:rgba(255,255,255,.08)}
+.nav button[aria-current=page]{background:var(--teal);color:#fff;font-weight:600}
+.tagline{margin-top:auto;border-top:1px solid rgba(255,255,255,.14);padding:14px 6px 2px;font-size:12px;letter-spacing:.02em;color:#9fd8c8;font-weight:600}
+.content{flex:1;min-width:0}
+.topbar{display:none}
+main{max-width:1120px;margin:0 auto;padding:26px clamp(16px,3vw,36px) 48px;outline:0}
+.scrim{display:none}
+
+/* type & common */
+h1{font-size:26px;line-height:1.2;color:var(--navy);letter-spacing:-.01em}
+h2{font-size:18px;color:var(--navy);margin-bottom:12px}
+h3{font-size:16px;line-height:1.35;color:var(--navy)}
+.head{margin-bottom:20px}.head p{color:var(--mut);margin-top:4px}
+.demo{display:flex;gap:10px;align-items:flex-start;background:var(--blueBg);color:#0b4a7a;border:1px solid #c5def2;border-radius:12px;padding:10px 14px;font-size:13px;margin-bottom:22px}
+.demo .i{width:18px;height:18px;margin-top:2px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--sh)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sec{margin-top:30px}
+.sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}.sec-head h2{margin:0}
+.link{border:0;background:none;color:var(--teal-d,#137a63);font-weight:600;padding:4px 0;display:inline-flex;gap:6px;align-items:center}
+.link .i{width:16px;height:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--navy);padding:10px 16px;font-weight:600;min-height:42px;transition:background .15s,border-color .15s}
+.btn:hover{border-color:#b9c7da;background:#f7f9fc}
+.btn.pri{background:var(--teal);border-color:var(--teal);color:#fff}.btn.pri:hover{background:var(--tealD);border-color:var(--tealD)}
+.btn.light{background:#fff;border-color:#fff;color:var(--navy)}
+.btn.ghost{background:transparent;border-color:rgba(255,255,255,.45);color:#fff}.btn.ghost:hover{background:rgba(255,255,255,.1)}
+.btn.sm{padding:6px 12px;min-height:36px;font-size:14px}
+.btn.danger{color:var(--red)}.btn.danger:hover{background:var(--redBg);border-color:#efc3be}
+.btn .i{width:17px;height:17px}
+.badge,.tag{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:700;white-space:nowrap}
+.tag{background:#eef2f7;color:var(--mut)}
+.b-ok{background:var(--mint);color:var(--tealD)}.b-mid{background:var(--amberBg);color:var(--amber)}.b-info{background:var(--blueBg);color:var(--blue)}.b-low{background:#eef2f7;color:var(--mut)}.b-bad{background:var(--redBg);color:var(--red)}
+.meter{height:8px;background:#e6ecf3;border-radius:99px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--teal);border-radius:99px;transition:width .4s ease}
+
+/* hero & stats */
+.hero{background:var(--navy);color:#fff;border-radius:20px;padding:28px;display:grid;grid-template-columns:1.5fr 1fr;gap:24px;align-items:center;border-left:6px solid var(--teal)}
+.hero h2{color:#fff;font-size:28px;line-height:1.2;margin-bottom:10px}
+.hero p{color:#cfdcf0;max-width:52ch}
+.hero .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.next{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:16px}
+.next small{color:#9fd8c8;font-weight:700}
+.next p{margin-top:6px;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:20px}
+.stat{display:flex;gap:14px;align-items:center;padding:18px}
+.stat .ico{width:46px;height:46px;border-radius:12px;background:var(--blueBg);color:var(--blue);display:grid;place-items:center;flex:none}
+.stat:nth-child(even) .ico{background:var(--mint);color:var(--tealD)}
+.stat b{display:block;font-size:26px;line-height:1.1;color:var(--navy)}.stat span{font-size:13px;color:var(--mut)}
+
+/* journey */
+.journey{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.step{position:relative}
+.step button{width:100%;height:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--sh)}
+.step button:hover{border-color:var(--teal)}
+.step .n{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--teal);color:#fff;font-weight:700;margin-bottom:10px}
+.step p{font-size:13.5px;color:var(--mut);margin-top:4px}
+.step:not(:last-child)::after{content:"";position:absolute;top:36px;right:-16px;width:16px;height:2px;background:var(--teal)}
+
+/* scholarship cards */
+.sch{display:flex;flex-direction:column;gap:10px}
+.sch p{font-size:13.5px;color:var(--mut)}
+.sch .btn{margin-top:auto}
+.pct{font-weight:800;color:var(--tealD);font-size:15px}
+.el{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.el::before{content:"";width:9px;height:9px;border-radius:50%;background:currentColor}
+.el.hi{color:var(--tealD)}.el.mid{color:var(--amber)}.el.lo{color:var(--mut)}
+.meta{font-size:12.5px;color:var(--mut)}
+
+/* discover tools */
+.tools{display:grid;gap:12px;margin-bottom:12px}
+.search{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:0 14px;color:var(--mut);box-shadow:var(--sh)}
+.search:focus-within{border-color:var(--teal)}
+.search input{flex:1;border:0;outline:0;background:none;padding:13px 0;min-width:0}
+.filters{display:grid;grid-template-columns:repeat(5,1fr) auto;gap:10px}
+select,.field input{border:1px solid #c9d4e3;border-radius:10px;padding:10px 12px;background:#fff;width:100%;min-height:42px}
+select:focus,.field input:focus{outline:0;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,146,120,.15)}
+#count{margin:6px 2px 14px;font-size:14px;color:var(--mut)}
+.empty{grid-column:1/-1;text-align:center;padding:36px 16px;color:var(--mut)}
+
+/* profile */
+.pf-top{display:flex;gap:18px;align-items:center;margin-bottom:20px;flex-wrap:wrap}
+.pf-top .big{font-size:38px;font-weight:800;color:var(--navy);line-height:1}
+.pf-top .meter{flex:1;min-width:180px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px}
+.field{display:grid;gap:6px}.field label{font-size:13px;font-weight:600;color:var(--navy)}
+.field.bad input,.field.bad select{border-color:var(--red)}.field small{color:var(--red);font-size:12px}
+.form .full{grid-column:1/-1;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+
+/* vault */
+.docs{display:grid;gap:12px}
+.doc{display:flex;align-items:center;gap:14px;padding:14px 16px}
+.doc .ico{width:44px;height:44px;border-radius:12px;background:var(--blueBg);color:var(--blue);display:grid;place-items:center;flex:none}
+.doc .nm{flex:1;min-width:0;font-weight:600;color:var(--navy);overflow-wrap:anywhere}
+.doc .acts{display:flex;gap:8px;flex:none}
+
+/* tracker */
+.apps{display:grid;gap:18px}
+.app header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px}
+.app .id{font-size:13px;color:var(--mut);font-weight:600}
+.prog{display:flex;justify-content:space-between;font-size:13px;color:var(--mut);margin-bottom:6px}.prog b{color:var(--navy)}
+.tl{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr)}
+.tl li{position:relative;padding:34px 12px 0 0}
+.tl li::before{content:"";position:absolute;top:11px;left:0;right:0;height:2px;background:var(--line)}
+.tl li.done::before{background:var(--teal)}
+.tl .dot{position:absolute;top:2px;left:0;width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid #c3cedd;display:grid;place-items:center;color:#fff;z-index:1}
+.tl .dot .i{width:12px;height:12px;stroke-width:3.5}
+.tl li.done .dot{background:var(--teal);border-color:var(--teal)}
+.tl li.cur .dot{border-color:var(--teal);box-shadow:0 0 0 4px rgba(26,146,120,.18)}
+.tl li.cur .dot::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--teal)}
+.tl strong{display:block;font-size:14px;color:var(--navy)}.tl span{font-size:12.5px;color:var(--mut)}
+.nextact{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;background:var(--bg);border-radius:12px;padding:12px 14px;margin-top:18px;font-size:14px}
+
+/* settings */
+.set{padding:0}
+.set .it{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 20px;border-bottom:1px solid var(--line)}
+.set .it:last-child{border-bottom:0}
+.set .it p{font-size:13px;color:var(--mut)}
+.set select{width:auto;min-width:150px}
+.sw{width:46px;height:26px;border-radius:99px;border:0;background:#c3cedd;position:relative;flex:none;transition:background .15s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .15s}
+.sw[aria-checked=true]{background:var(--teal)}.sw[aria-checked=true]::after{transform:translateX(20px)}
+
+/* modal & toast */
+.modal{position:fixed;inset:0;background:rgba(14,39,72,.55);z-index:100;display:grid;place-items:center;padding:12px}
+.mbox{background:#fff;border-radius:18px;width:min(560px,100%);max-height:92vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(14,39,72,.35)}
+.mh{padding:20px 22px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
+.mh p{font-size:14px;color:var(--mut);margin-top:2px}
+.x{border:0;background:#eef2f7;border-radius:50%;width:36px;height:36px;display:grid;place-items:center;flex:none}
+.mb{padding:18px 22px;overflow:auto;display:grid;gap:18px}
+.mb h3{font-size:14px;margin-bottom:8px}
+.cl{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.cl li{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14px}
+.cl li>span:not(.mk):not(.badge){flex:1}
+.mk{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--mint);color:var(--tealD)}
+.mk.no{background:var(--redBg);color:var(--red)}.mk.wa{background:var(--amberBg);color:var(--amber)}
+.mk .i{width:13px;height:13px;stroke-width:3.5}
+.note{font-size:13px;color:var(--amber);background:var(--amberBg);border-radius:10px;padding:10px 12px}
+.mf{padding:14px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
+.toasts{position:fixed;right:18px;bottom:18px;display:grid;gap:10px;z-index:200;max-width:min(380px,calc(100% - 36px))}
+.toast{background:var(--navy);color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 8px 24px rgba(14,39,72,.3);display:flex;gap:10px;align-items:flex-start;font-size:14px;border-left:4px solid #5fd2b6;animation:in .2s ease-out}
+.toast.err{border-left-color:#ff8f86}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* responsive */
+@media(max-width:1100px){.stats{grid-template-columns:repeat(2,1fr)}.journey{grid-template-columns:repeat(2,1fr)}.step:nth-child(2)::after{display:none}.filters{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){
+  .side{position:fixed;top:0;bottom:0;left:0;z-index:60;width:min(290px,84vw);transform:translateX(-105%);transition:transform .25s ease;height:auto}
+  .side.open{transform:none;box-shadow:8px 0 30px rgba(14,39,72,.35)}
+  .scrim.show{display:block;position:fixed;inset:0;background:rgba(14,39,72,.5);z-index:55}
+  .topbar{display:flex;align-items:center;gap:12px;background:var(--navy);color:#fff;padding:10px 14px;position:sticky;top:0;z-index:40}
+  .topbar .mb2{border:0;background:rgba(255,255,255,.12);color:#fff;width:42px;height:42px;border-radius:10px;display:grid;place-items:center}
+  .topbar b{font-size:18px;flex:1}
+  .av{width:34px;height:34px;border-radius:50%;background:var(--teal);font-weight:700;display:grid;place-items:center}
+  .hero{grid-template-columns:1fr}
+  .toasts{left:12px;right:12px;max-width:none;bottom:14px}
+}
+@media(max-width:700px){
+  h1{font-size:22px}.hero{padding:22px}.hero h2{font-size:23px}
+  .form{grid-template-columns:1fr}
+  .tl{grid-template-columns:1fr}.tl li{padding:0 0 20px 34px}.tl li::before{top:22px;bottom:-2px;left:9px;right:auto;width:2px;height:auto}.tl li:last-child::before{display:none}.tl .dot{top:0}
+  .filters{grid-template-columns:1fr 1fr}.filters .btn{grid-column:1/-1}
+  .doc{flex-wrap:wrap}.doc .acts{width:100%}.doc .acts .btn{flex:1}
+  .mf .btn{flex:1}
+  .set .it{flex-wrap:wrap}
+}
+@media(max-width:520px){.grid,.journey{grid-template-columns:1fr}.step::after{display:none!important}.stats{grid-template-columns:1fr 1fr;gap:12px}.stat{flex-direction:column;align-items:flex-start;gap:10px;padding:14px}.filters{grid-template-columns:1fr}}
+@media(max-width:340px){.stats{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></symbol>
-    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
-    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></symbol>
-    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
-    <symbol id="i-track" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
-    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol>
-    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m0 0L7 9m5-5l5 5M4 20h16"/></symbol>
-    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
-    <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></symbol>
-    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
-    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6l6 6-6 6"/></symbol>
-  </defs>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+ <symbol id="i-logo" viewBox="0 0 48 48"><rect width="48" height="48" rx="11" fill="#1a9278"/><path d="M8 31c4.500-14 27.500-14 32 0M8 34h32M15 23v11M24 20v14M33 23v11" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></symbol>
+ <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></symbol>
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.300-4.300"/></symbol>
+ <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></symbol>
+ <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+ <symbol id="i-track" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+ <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 6h10M20 6h0M4 12h4M14 12h6M4 18h12M20 18h0"/><circle cx="17" cy="6" r="2.500"/><circle cx="11" cy="12" r="2.500"/><circle cx="19" cy="18" r="2"/></symbol>
+ <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+ <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+ <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol>
+ <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></symbol>
+ <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 13h6M9 17h6"/></symbol>
+ <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m0 0L7 9m5-5l5 5M4 20h16"/></symbol>
+ <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+ <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></symbol>
+ <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
+ <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6l6 6-6 6"/></symbol>
+ <symbol id="i-logout" viewBox="0 0 24 24"><path d="M10 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h5M16 8l4 4-4 4M20 12H9"/></symbol>
 </svg>
 
-<div class="app">
-  <aside class="side" aria-label="Main navigation">
-    <div class="brand">
-      <img src="assets/favicon.svg" alt="" width="38" height="38">
-      <div><strong>Unified Scholarship</strong><span>Platform for Tribal Students</span></div>
-    </div>
-    <nav id="sideNav" class="nav"></nav>
-    <div class="pcard">
-      <div class="who"><span class="ava" id="sideAva">S</span><div><b id="sideName">Student</b><small id="sideLevel"></small></div></div>
-      <div class="meter on-dark"><i id="sideBar"></i></div>
-      <div class="row"><span>Profile</span><b id="sidePct">0%</b></div>
-    </div>
-    <div class="quote">One student • One profile • One journey</div>
+<div class="shell">
+  <aside class="side" id="side" aria-label="Main navigation">
+    <div class="brand"><svg aria-hidden="true"><use href="#i-logo"/></svg><div><b>ScholarSetu</b><small>Unified Scholarship Platform</small></div></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="tagline">One Student • One Profile • One Journey</div>
   </aside>
+  <div class="scrim" id="scrim"></div>
 
-  <header class="top">
-    <div class="brand"><img src="assets/favicon.svg" alt="" width="32" height="32"><strong>Unified Scholarship</strong></div>
-    <span class="avatar" id="topAvatar" aria-hidden="true">S</span>
-  </header>
+  <div class="content">
+    <header class="topbar">
+      <button type="button" class="mb2" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="side"><svg class="i"><use href="#i-menu"/></svg></button>
+      <b>ScholarSetu</b><span class="av" aria-hidden="true">S</span>
+    </header>
 
-  <main id="main" tabindex="-1">
-    <div class="demo-note" role="note">
-      <svg class="i"><use href="#i-info"/></svg>
-      <span>Prototype with demo data. Scholarship names, amounts, dates and match scores are illustrative and not verified government information.</span>
-    </div>
+    <main id="main" tabindex="-1">
+      <div class="demo" role="note"><svg class="i"><use href="#i-info"/></svg><span><b>Demo data</b> — scholarship details are illustrative and not verified government information.</span></div>
 
-    <section id="view-dashboard" class="view" data-title="Dashboard"></section>
+      <section class="view" id="v-dashboard"></section>
 
-    <section id="view-discover" class="view" data-title="Discover Scholarships" hidden>
-      <div class="page-head"><h1>Scholarships for you</h1><p>Matched to your profile, so you don't have to read every scheme.</p></div>
-      <div class="tools">
-        <label class="search"><svg class="i"><use href="#i-search"/></svg>
-          <input id="q" type="search" placeholder="Search by name, category or keyword" autocomplete="off" aria-label="Search scholarships">
-        </label>
-        <div class="chips" id="chips" role="group" aria-label="Filter by category"></div>
-      </div>
-      <p id="count" class="mut" aria-live="polite"></p>
-      <div class="grid" id="results"></div>
-    </section>
+      <section class="view" id="v-discover" hidden>
+        <div class="head"><h1>Discover Scholarships</h1><p>Search and filter demo schemes matched to your profile.</p></div>
+        <div class="tools">
+          <label class="search"><svg class="i"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Search scholarships..." autocomplete="off" aria-label="Search scholarships"></label>
+          <div class="filters">
+            <select id="fLevel" aria-label="Education level"><option value="">Education Level</option><option>School</option><option>Undergraduate</option><option>Postgraduate</option><option>Research</option></select>
+            <select id="fCat" aria-label="Category"><option value="">Category</option><option>Higher Education</option><option>School Education</option><option>Education</option><option>Technical Education</option></select>
+            <select id="fState" aria-label="State"><option value="">State</option><option>All India</option><option>Uttar Pradesh</option></select>
+            <select id="fInc" aria-label="Income range"><option value="">Income Range</option><option>Up to ₹2.5 lakh</option><option>₹2.5–6 lakh</option></select>
+            <select id="fEl" aria-label="Eligibility"><option value="">Eligibility</option><option value="hi">Highly eligible (85%+)</option><option value="mid">Likely eligible (70–84%)</option><option value="lo">Partially eligible (below 70%)</option></select>
+            <button type="button" class="btn" id="reset">Reset</button>
+          </div>
+        </div>
+        <p id="count" aria-live="polite"></p>
+        <div class="grid" id="results"></div>
+      </section>
 
-    <section id="view-profile" class="view" data-title="My Profile" hidden>
-      <div class="page-head"><h1>My profile</h1><p>Fill this once. Every scholarship check uses it.</p></div>
-      <div id="pfHead"></div>
-      <div class="split">
-        <form id="profileForm" class="card form" novalidate></form>
-        <aside class="card">
-          <h2>Profile completion</h2>
-          <div class="big" id="pfPct">0%</div>
-          <div class="meter"><i id="pfBar"></i></div>
-          <p class="mut" id="pfHint"></p>
-        </aside>
-      </div>
-    </section>
+      <section class="view" id="v-profile" hidden>
+        <div class="head"><h1>My Profile</h1><p>Complete your profile to improve scholarship matching.</p></div>
+        <div class="card">
+          <div class="pf-top"><div><div class="big" id="pfPct">0%</div><span class="mut">Profile completion</span></div>
+            <div class="meter" role="progressbar" aria-label="Profile completion" aria-valuemin="0" aria-valuemax="100" id="pfMeter"><i id="pfBar" style="width:0"></i></div></div>
+          <form class="form" id="pfForm" novalidate></form>
+        </div>
+      </section>
 
-    <section id="view-vault" class="view" data-title="Document Vault" hidden>
-      <div class="page-head"><h1>Document vault</h1><p>Upload once. Reuse across schemes wherever permitted.</p></div>
-      <div id="vaultHead"></div><div class="grid" id="vault"></div>
-    </section>
+      <section class="view" id="v-vault" hidden>
+        <div class="head row" style="align-items:flex-end;flex-wrap:wrap">
+          <div><h1>Document Vault</h1><p>Store documents once and reuse them during scholarship applications.</p></div>
+          <button type="button" class="btn pri" id="upBtn"><svg class="i"><use href="#i-upload"/></svg>+ Upload Document</button>
+        </div>
+        <div class="docs" id="docs"></div>
+      </section>
 
-    <section id="view-tracker" class="view" data-title="Application Tracker" hidden>
-      <div class="page-head"><h1>Application tracker</h1><p>See where each application stands and what to do next.</p></div>
-      <div id="trHead"></div><div class="stack" id="apps"></div>
-    </section>
+      <section class="view" id="v-tracker" hidden>
+        <div class="head"><h1>Application Tracker</h1><p>See where each application stands and what to do next.</p></div>
+        <div class="apps" id="apps"></div>
+      </section>
 
-    <footer class="foot">One student • One profile • One journey &nbsp;|&nbsp; SIH 2025 · PS 26238 · Prototype</footer>
-  </main>
-
-  <nav id="bottomNav" class="bottom" aria-label="Mobile navigation"></nav>
+      <section class="view" id="v-settings" hidden>
+        <div class="head"><h1>Settings</h1><p>Prototype preferences. Nothing is sent to a server.</p></div>
+        <div class="card set" id="set"></div>
+      </section>
+    </main>
+  </div>
 </div>
 
-<dialog id="modal" aria-labelledby="mTitle"></dialog>
-<div id="toasts" class="toasts" aria-live="polite"></div>
-<script src="js/app.js"></script>
+<div class="modal" id="modal" hidden></div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var ic = function (n) { return '<svg class="i" aria-hidden="true"><use href="#i-' + n + '"/></svg>'; };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+
+  /* ---------- DEMO DATA ---------- */
+  var VIEWS = [['dashboard', 'Dashboard', 'home'], ['discover', 'Discover Scholarships', 'search'], ['profile', 'My Profile', 'user'], ['vault', 'Document Vault', 'folder'], ['tracker', 'Application Tracker', 'track'], ['settings', 'Settings', 'settings']];
+  var SCH = [
+    { id: 'post', name: 'Post-Matric Scholarship', cat: 'Higher Education', level: 'Undergraduate', state: 'All India', inc: 'Up to ₹2.5 lakh', m: 94, d: 'Tuition and maintenance support for students after Class 10 (demo).' },
+    { id: 'pre', name: 'Pre-Matric Scholarship', cat: 'School Education', level: 'School', state: 'All India', inc: 'Up to ₹2.5 lakh', m: 87, d: 'Support for books, uniforms and fees in school years (demo).' },
+    { id: 'merit', name: 'Merit Support Scheme', cat: 'Education', level: 'Undergraduate', state: 'All India', inc: '₹2.5–6 lakh', m: 81, d: 'Recognition and financial support for strong academic results (demo).' },
+    { id: 'res', name: 'Research Fellowship', cat: 'Higher Education', level: 'Research', state: 'All India', inc: '₹2.5–6 lakh', m: 74, d: 'Monthly fellowship for doctoral and research scholars (demo).' },
+    { id: 'inst', name: 'Institution Assistance', cat: 'Education', level: 'Undergraduate', state: 'All India', inc: 'Up to ₹2.5 lakh', m: 69, d: 'Fee support routed through your institute (demo).' },
+    { id: 'tech', name: 'Technical Education Grant', cat: 'Technical Education', level: 'Undergraduate', state: 'All India', inc: '₹2.5–6 lakh', m: 78, d: 'Help with engineering and diploma course costs (demo).' },
+    { id: 'dom', name: 'State Domicile Aid', cat: 'Education', level: 'Undergraduate', state: 'Uttar Pradesh', inc: 'Up to ₹2.5 lakh', m: 72, d: 'Aid for students who are residents of the state (demo).' },
+    { id: 'host', name: 'Hostel & Books Support', cat: 'Education', level: 'Postgraduate', state: 'All India', inc: 'Up to ₹2.5 lakh', m: 66, d: 'Contribution towards accommodation and study material (demo).' }
+  ];
+  var STATES = ['Uttar Pradesh', 'Bihar', 'Jharkhand', 'Odisha', 'Chhattisgarh', 'Madhya Pradesh', 'Maharashtra', 'Gujarat', 'Rajasthan', 'Assam'];
+  var PF = [
+    ['name', 'Full Name', 'text'], ['mobile', 'Mobile Number', 'tel'], ['email', 'Email Address', 'email'], ['dob', 'Date of Birth', 'date'],
+    ['category', 'Category', 'select', ['General', 'OBC', 'SC', 'ST']], ['state', 'State', 'select', STATES],
+    ['course', 'Course', 'select', ['Class 11-12', 'Diploma', 'B.A.', 'B.Sc.', 'B.Tech', 'M.A. / M.Sc.', 'M.Tech', 'PhD']],
+    ['institute', 'Institute', 'text'], ['income', 'Annual Family Income (₹)', 'number'], ['year', 'Academic Year', 'text']
+  ];
+  var profile = { name: 'Student User', mobile: '', email: 'student.user@example.com', dob: '', category: 'ST', state: 'Uttar Pradesh', course: 'B.Tech', institute: 'Kashi Institute of Technology', income: '180000', year: '2026-27' };
+  var docs = [
+    { id: 1, name: '10th Marksheet.pdf', st: 'READY' }, { id: 2, name: '12th Marksheet.pdf', st: 'READY' }, { id: 3, name: 'Caste Certificate.pdf', st: 'READY' },
+    { id: 4, name: 'Income Certificate.pdf', st: 'READY' }, { id: 5, name: 'Domicile Certificate.pdf', st: 'REVIEW' }, { id: 6, name: 'Bank Details.pdf', st: 'REVIEW' }
+  ];
+  var apps = [
+    { id: 'APP-2026-0184', sid: 'post', status: 'Document Verification', progress: 65, done: 1, cur: true, date: '18 September 2026' },
+    { id: 'APP-2026-0112', sid: 'merit', status: 'Submitted', progress: 30, done: 1, cur: false, date: '25 September 2026' }
+  ];
+  var settings = { notif: true, remind: true, lang: 'English', privacy: true };
+  var STAGES = ['Application Submitted', 'Document Verification', 'Institute Verification', 'Final Decision'];
+  var UPNAMES = ['Transfer Certificate.pdf', 'Aadhaar Copy.pdf', 'Admission Letter.pdf', 'Passport Photo.pdf'];
+  var nextDoc = 7, upCount = 0, view = 'dashboard', lastFocus = null;
+
+  /* ---------- helpers ---------- */
+  var byId = function (id) { return SCH.filter(function (s) { return s.id === id; })[0]; };
+  var filled = function (p) { return PF.filter(function (f) { return String(p[f[0]] == null ? '' : p[f[0]]).trim() !== ''; }).length; };
+  var completion = function (p) { return Math.round(filled(p || profile) / PF.length * 100); };
+  var elig = function (m) { return m >= 85 ? { k: 'hi', t: 'Highly eligible' } : m >= 70 ? { k: 'mid', t: 'Likely eligible' } : { k: 'lo', t: 'Partially eligible' }; };
+  var today = function () { return new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }); };
+  var docBadge = function (s) { return s === 'READY' ? '<span class="badge b-ok">' + ic('check') + 'READY</span>' : s === 'REVIEW' ? '<span class="badge b-mid">REVIEW</span>' : '<span class="badge b-bad">MISSING</span>'; };
+
+  function toast(msg, err) {
+    var t = document.createElement('div'); t.className = 'toast' + (err ? ' err' : '');
+    t.innerHTML = ic(err ? 'info' : 'check') + '<span>' + esc(msg) + '</span>';
+    $('#toasts').appendChild(t); setTimeout(function () { t.remove(); }, 3600);
+  }
+
+  /* ---------- navigation ---------- */
+  function buildNav() {
+    $('#nav').innerHTML = VIEWS.map(function (v) { return '<button type="button" data-nav="' + v[0] + '">' + ic(v[2]) + '<span>' + v[1] + '</span></button>'; }).join('');
+  }
+  function drawer(open) {
+    $('#side').classList.toggle('open', open); $('#scrim').classList.toggle('show', open);
+    $('#menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  function show(v, fromHash) {
+    if (!$('#v-' + v)) v = 'dashboard';
+    view = v;
+    $$('.view').forEach(function (s) { s.hidden = s.id !== 'v-' + v; });
+    $$('#nav button').forEach(function (b) { if (b.getAttribute('data-nav') === v) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
+    ({ dashboard: rDash, discover: rDiscover, profile: rProfile, vault: rVault, tracker: rTracker, settings: rSettings })[v]();
+    drawer(false);
+    document.title = VIEWS.filter(function (x) { return x[0] === v; })[0][1] + ' | ScholarSetu';
+    if (!fromHash && location.hash !== '#' + v) { try { location.hash = v; } catch (e) { /* ignore */ } }
+    window.scrollTo(0, 0);
+  }
+
+  /* ---------- views ---------- */
+  function schCard(s) {
+    var e = elig(s.m);
+    return '<article class="card sch"><div class="row"><span class="tag">' + esc(s.cat) + '</span><span class="pct">' + s.m + '% match</span></div>' +
+      '<h3>' + esc(s.name) + '</h3><p>' + esc(s.d) + '</p>' +
+      '<div class="meter" role="progressbar" aria-label="Match" aria-valuenow="' + s.m + '" aria-valuemin="0" aria-valuemax="100"><i style="width:' + s.m + '%"></i></div>' +
+      '<div class="row"><span class="el ' + e.k + '">' + e.t + '</span><span class="meta">' + esc(s.level) + ' · ' + esc(s.state) + '</span></div>' +
+      '<button type="button" class="btn pri" data-apply="' + s.id + '">Check &amp; Apply</button></article>';
+  }
+
+  function rDash() {
+    var c = completion(), top = SCH.slice().sort(function (a, b) { return b.m - a.m; }).slice(0, 3);
+    var miss = PF.filter(function (f) { return String(profile[f[0]] || '').trim() === ''; }).map(function (f) { return f[1].toLowerCase(); });
+    var rev = docs.filter(function (d) { return d.st === 'REVIEW'; })[0];
+    var next = miss.length ? 'Add your ' + miss.join(' and ') + ' to improve matching.' : rev ? rev.name.replace('.pdf', '') + ' is under review.' : 'Explore your best matches and apply.';
+    var stats = [['circle-check', SCH.length, 'Eligible Schemes'], ['file', apps.length, 'Applications'], ['folder', docs.length, 'Documents'], ['user', c + '%', 'Profile Completion']];
+    var steps = [['Create Profile', 'Add basic details and education information.', 'profile'], ['Smart Eligibility', "Match scholarship schemes to the student's profile.", 'discover'], ['Apply', 'Use guided forms and stored documents.', 'discover'], ['Track', 'Track application status and reminders.', 'tracker']];
+    $('#v-dashboard').innerHTML =
+      '<div class="head"><h1>Good morning, Student 👋</h1><p>Find and manage scholarships from one place.</p></div>' +
+      '<div class="hero"><div><h2>Find scholarships with less confusion.</h2><p>Create one profile, discover matching schemes, submit documents and track your applications from one place.</p>' +
+      '<div class="acts"><button type="button" class="btn light" data-nav="discover">Explore Scholarships</button><button type="button" class="btn ghost" data-nav="profile">Complete Profile</button></div></div>' +
+      '<div class="next"><small>YOUR NEXT STEP</small><p>' + esc(next) + '</p></div></div>' +
+      '<div class="stats">' + stats.map(function (s) { return '<div class="card stat"><div class="ico">' + ic(s[0]) + '</div><div><b>' + s[1] + '</b><span>' + s[2] + '</span></div></div>'; }).join('') + '</div>' +
+      '<div class="sec"><div class="sec-head"><h2>Your Scholarship Journey</h2></div><ol class="journey">' +
+      steps.map(function (s, i) { return '<li class="step"><button type="button" data-nav="' + s[2] + '"><span class="n">0' + (i + 1) + '</span><h3>' + s[0] + '</h3><p>' + s[1] + '</p></button></li>'; }).join('') + '</ol></div>' +
+      '<div class="sec"><div class="sec-head"><h2>Recommended Scholarships</h2><button type="button" class="link" data-nav="discover">View all ' + ic('arrow') + '</button></div><div class="grid">' + top.map(schCard).join('') + '</div></div>';
+  }
+
+  function rDiscover() { renderResults(); }
+  function renderResults() {
+    var q = $('#q').value.trim().toLowerCase(), lv = $('#fLevel').value, ct = $('#fCat').value, st = $('#fState').value, ic2 = $('#fInc').value, el = $('#fEl').value;
+    var res = SCH.filter(function (s) {
+      var hay = (s.name + ' ' + s.cat + ' ' + s.d + ' ' + s.level + ' ' + s.state).toLowerCase();
+      return (!q || hay.indexOf(q) > -1) && (!lv || s.level === lv) && (!ct || s.cat === ct) && (!st || s.state === st) && (!ic2 || s.inc === ic2) && (!el || elig(s.m).k === el);
+    }).sort(function (a, b) { return b.m - a.m; });
+    $('#count').textContent = res.length + (res.length === 1 ? ' scholarship' : ' scholarships') + ' found';
+    $('#results').innerHTML = res.length ? res.map(schCard).join('') : '<div class="card empty"><h3>No scholarships match these filters</h3><p>Try a different word or press Reset.</p></div>';
+  }
+
+  var pfBuilt = false;
+  function rProfile() {
+    var f = $('#pfForm');
+    if (!pfBuilt) {
+      f.innerHTML = PF.map(function (x) {
+        var ctl = x[2] === 'select'
+          ? '<select id="p-' + x[0] + '"><option value="">Select</option>' + x[3].map(function (o) { return '<option>' + esc(o) + '</option>'; }).join('') + '</select>'
+          : '<input id="p-' + x[0] + '" type="' + x[2] + '"' + (x[0] === 'mobile' ? ' inputmode="numeric" maxlength="10" placeholder="10-digit number"' : '') + (x[0] === 'income' ? ' min="0" inputmode="numeric"' : '') + (x[0] === 'year' ? ' placeholder="e.g. 2026-27"' : '') + '>';
+        return '<div class="field"><label for="p-' + x[0] + '">' + x[1] + '</label>' + ctl + '<small></small></div>';
+      }).join('') + '<div class="full"><button type="submit" class="btn pri">Save Changes</button><span class="mut" style="font-size:13px">Complete your profile to improve scholarship matching.</span></div>';
+      pfBuilt = true;
+    }
+    PF.forEach(function (x) { $('#p-' + x[0]).value = profile[x[0]] || ''; });
+    $$('.field', f).forEach(function (el) { el.classList.remove('bad'); $('small', el).textContent = ''; });
+    pfPreview();
+  }
+  function pfVals() { var o = {}; PF.forEach(function (x) { o[x[0]] = ($('#p-' + x[0]).value || '').trim(); }); return o; }
+  function pfPreview() {
+    var c = completion(pfVals());
+    $('#pfPct').textContent = c + '%'; $('#pfBar').style.width = c + '%'; $('#pfMeter').setAttribute('aria-valuenow', c);
+  }
+  function pfSave(e) {
+    e.preventDefault();
+    var v = pfVals(), bad = {};
+    if (v.name.length < 2) bad.name = 'Enter your full name.';
+    if (v.mobile && !/^[6-9]\d{9}$/.test(v.mobile)) bad.mobile = 'Enter a valid 10-digit mobile number.';
+    if (v.email && !/^\S+@\S+\.\S+$/.test(v.email)) bad.email = 'Enter a valid email address.';
+    if (v.income && (isNaN(Number(v.income)) || Number(v.income) < 0)) bad.income = 'Enter income as a positive number.';
+    PF.forEach(function (x) { var el = $('#p-' + x[0]).closest('.field'); el.classList.toggle('bad', !!bad[x[0]]); $('small', el).textContent = bad[x[0]] || ''; });
+    if (Object.keys(bad).length) { toast('Please fix the highlighted fields.', true); return; }
+    profile = v; pfPreview(); toast('Profile updated successfully.');
+  }
+
+  function rVault() {
+    $('#docs').innerHTML = docs.length ? docs.map(function (d) {
+      return '<div class="card doc"><div class="ico">' + ic('file') + '</div><div class="nm">' + esc(d.name) + '</div>' + docBadge(d.st) +
+        '<div class="acts"><button type="button" class="btn sm" data-viewdoc="' + d.id + '">' + ic('eye') + 'View</button><button type="button" class="btn sm danger" data-deldoc="' + d.id + '">' + ic('trash') + 'Delete</button></div></div>';
+    }).join('') : '<div class="card empty"><h3>No documents yet</h3><p>Choose + Upload Document to add your first one.</p></div>';
+  }
+  function upload() {
+    var name = upCount < UPNAMES.length ? UPNAMES[upCount] : 'Document ' + (upCount + 1) + '.pdf';
+    upCount++; docs.push({ id: nextDoc++, name: name, st: 'REVIEW' }); rVault(); toast('Document uploaded successfully.');
+  }
+
+  function stageText(a, i) {
+    if (i < a.done) return i === 0 ? a.date : 'Completed';
+    if (a.cur && i === a.done) return i === 0 ? 'Draft saved. Submit when ready.' : 'Currently under review';
+    return i === (a.cur ? a.done + 1 : a.done) ? 'Next stage' : 'Pending';
+  }
+  function rTracker() {
+    $('#apps').innerHTML = apps.map(function (a) {
+      var s = byId(a.sid), draft = a.status === 'Draft started';
+      var cls = draft ? 'b-low' : a.status === 'Submitted' ? 'b-info' : 'b-mid';
+      var tip = draft ? 'Review your details and submit your application.' : a.status === 'Submitted' ? 'Document verification starts next. Keep your mobile number active for reminders.' : 'Documents are under review. Check the Document Vault for items marked REVIEW.';
+      return '<article class="card app"><header><div><div class="id">' + a.id + '</div><h3>' + esc(s.name) + '</h3></div><span class="badge ' + cls + '">' + a.status + '</span></header>' +
+        '<div class="prog"><span>Progress</span><b>' + a.progress + '%</b></div><div class="meter" role="progressbar" aria-valuenow="' + a.progress + '" aria-valuemin="0" aria-valuemax="100"><i style="width:' + a.progress + '%"></i></div>' +
+        '<ol class="tl">' + STAGES.map(function (t, i) {
+          var c = i < a.done ? 'done' : (a.cur && i === a.done) ? 'cur' : '';
+          return '<li class="' + c + '"><span class="dot">' + (i < a.done ? ic('check') : '') + '</span><strong>' + t + '</strong><span>' + stageText(a, i) + '</span></li>';
+        }).join('') + '</ol>' +
+        '<div class="nextact"><span><b>Next action:</b> ' + tip + '</span>' + (draft ? '<button type="button" class="btn pri sm" data-submit="' + a.id + '">Submit application</button>' : '') + '</div></article>';
+    }).join('');
+  }
+
+  function rSettings() {
+    var sw = function (k, l, d) { return '<div class="it"><div><b>' + l + '</b><p>' + d + '</p></div><button type="button" class="sw" role="switch" data-sw="' + k + '" aria-checked="' + settings[k] + '" aria-label="' + l + '"></button></div>'; };
+    $('#set').innerHTML = sw('notif', 'Notifications', 'Alerts about new matches and status changes.') + sw('remind', 'SMS / Email reminders', 'Reminders before deadlines and for pending documents.') +
+      '<div class="it"><div><b>Language</b><p>Prototype: the interface stays in English.</p></div><select id="lang" aria-label="Language">' +
+      ['English', 'हिन्दी (Hindi)', 'ଓଡ଼ିଆ (Odia)', 'ᱥᱟᱱᱛᱟᱲᱤ (Santali)'].map(function (l) { return '<option' + (l === settings.lang ? ' selected' : '') + '>' + l + '</option>'; }).join('') + '</select></div>' +
+      sw('privacy', 'Privacy', 'Share profile details with my institute for verification.') +
+      '<div class="it"><div><b>Logout</b><p>Prototype only: no account is signed in.</p></div><button type="button" class="btn danger" data-logout>' + ic('logout') + 'Logout</button></div>';
+  }
+
+  /* ---------- modal ---------- */
+  function openModal(html) {
+    lastFocus = document.activeElement;
+    var m = $('#modal'); m.innerHTML = '<div class="mbox" role="dialog" aria-modal="true" aria-labelledby="mt">' + html + '</div>'; m.hidden = false;
+    document.body.classList.add('lock'); var f = $('.pri', m) || $('button', m); if (f) f.focus();
+  }
+  function closeModal() {
+    var m = $('#modal'); if (m.hidden) return; m.hidden = true; m.innerHTML = ''; document.body.classList.remove('lock');
+    if (lastFocus && lastFocus.focus) { try { lastFocus.focus(); } catch (e) { /* ignore */ } }
+  }
+  var head = function (t, sub) { return '<div class="mh"><div><h2 id="mt" style="margin:0">' + t + '</h2><p>' + sub + '</p></div><button type="button" class="x" data-close aria-label="Close">' + ic('x') + '</button></div>'; };
+
+  function openApply(id) {
+    var s = byId(id), req = ['10th Marksheet', '12th Marksheet', 'Caste Certificate', 'Income Certificate', 'Domicile Certificate'];
+    var st = req.map(function (n) { var d = docs.filter(function (x) { return x.name.indexOf(n) === 0; })[0]; return { n: n, s: d ? d.st : 'MISSING' }; });
+    var miss = st.filter(function (x) { return x.s === 'MISSING'; }).length, rev = st.filter(function (x) { return x.s === 'REVIEW'; }).length;
+    var checks = [[completion() >= 60, 'Profile information available'], [!!(profile.course && profile.institute && profile.year), 'Academic details available'], [miss === 0, 'Required documents available']];
+    openModal(head('Scholarship Application', esc(s.name) + ' · ' + s.m + '% match') +
+      '<div class="mb"><div><h3>Eligibility</h3><ul class="cl">' + checks.map(function (c) { return '<li><span class="mk ' + (c[0] ? '' : 'no') + '">' + ic(c[0] ? 'check' : 'x') + '</span><span>' + c[1] + '</span></li>'; }).join('') + '</ul></div>' +
+      '<div><h3>Required Documents</h3><ul class="cl">' + st.map(function (x) { return '<li><span class="mk ' + (x.s === 'READY' ? '' : x.s === 'REVIEW' ? 'wa' : 'no') + '">' + ic(x.s === 'MISSING' ? 'x' : 'check') + '</span><span>' + x.n + '</span>' + docBadge(x.s) + '</li>'; }).join('') + '</ul></div>' +
+      (miss ? '<p class="note">' + miss + ' document' + (miss > 1 ? 's are' : ' is') + ' missing. You can start now and upload it in the Document Vault before submitting.</p>' : rev ? '<p class="note">' + rev + ' document' + (rev > 1 ? 's are' : ' is') + ' still under review. You can continue.</p>' : '') + '</div>' +
+      '<div class="mf"><button type="button" class="btn" data-close>Cancel</button><button type="button" class="btn pri" data-start="' + s.id + '">Start Application</button></div>');
+  }
+  function startApp(id) {
+    var s = byId(id), ex = apps.filter(function (a) { return a.sid === id; })[0];
+    closeModal();
+    if (ex) { toast('This application is already in your tracker.'); show('tracker'); return; }
+    var n = 200 + apps.length;
+    apps.unshift({ id: 'APP-2026-0' + n, sid: id, status: 'Draft started', progress: 10, done: 0, cur: true, date: today() });
+    show('tracker'); toast('Application started successfully.');
+  }
+  function viewDoc(id) {
+    var d = docs.filter(function (x) { return x.id === id; })[0]; if (!d) return;
+    openModal(head('Document preview', esc(d.name)) + '<div class="mb"><div class="row">' + docBadge(d.st) + '</div><p class="mut">Preview is not available in this prototype. In the full platform, documents are stored securely and checked by verifiers.</p></div><div class="mf"><button type="button" class="btn pri" data-close>Close</button></div>');
+  }
+  function openLogout() {
+    openModal(head('Log out?', 'Prototype only') + '<div class="mb"><p class="mut">No real account is signed in. This only demonstrates the flow.</p></div><div class="mf"><button type="button" class="btn" data-close>Cancel</button><button type="button" class="btn pri" data-dologout>Logout</button></div>');
+  }
+
+  /* ---------- events ---------- */
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-nav],[data-apply],[data-start],[data-close],[data-viewdoc],[data-deldoc],[data-submit],[data-sw],[data-logout],[data-dologout]');
+    if (e.target === $('#modal')) { closeModal(); return; }
+    if (!t) return;
+    if (t.hasAttribute('data-nav')) { closeModal(); show(t.getAttribute('data-nav')); }
+    else if (t.hasAttribute('data-apply')) openApply(t.getAttribute('data-apply'));
+    else if (t.hasAttribute('data-start')) startApp(t.getAttribute('data-start'));
+    else if (t.hasAttribute('data-close')) closeModal();
+    else if (t.hasAttribute('data-viewdoc')) viewDoc(+t.getAttribute('data-viewdoc'));
+    else if (t.hasAttribute('data-deldoc')) { var id = +t.getAttribute('data-deldoc'); docs = docs.filter(function (d) { return d.id !== id; }); rVault(); toast('Document deleted.'); }
+    else if (t.hasAttribute('data-submit')) {
+      var a = apps.filter(function (x) { return x.id === t.getAttribute('data-submit'); })[0];
+      if (a) { a.status = 'Submitted'; a.progress = 30; a.done = 1; a.cur = false; a.date = today(); rTracker(); toast('Application submitted (prototype).'); }
+    }
+    else if (t.hasAttribute('data-sw')) {
+      var k = t.getAttribute('data-sw'); settings[k] = !settings[k]; t.setAttribute('aria-checked', settings[k]);
+      toast(({ notif: 'Notifications', remind: 'SMS / Email reminders', privacy: 'Privacy sharing' })[k] + (settings[k] ? ' turned on.' : ' turned off.'));
+    }
+    else if (t.hasAttribute('data-logout')) openLogout();
+    else if (t.hasAttribute('data-dologout')) { closeModal(); show('dashboard'); toast('Logged out (prototype only).'); }
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeModal(); drawer(false); } });
+  document.addEventListener('change', function (e) { if (e.target.id === 'lang') { settings.lang = e.target.value; toast('Language preference saved (prototype: interface stays in English).'); } });
+  $('#menuBtn').addEventListener('click', function () { drawer(!$('#side').classList.contains('open')); });
+  $('#scrim').addEventListener('click', function () { drawer(false); });
+  $('#q').addEventListener('input', renderResults);
+  ['fLevel', 'fCat', 'fState', 'fInc', 'fEl'].forEach(function (id) { $('#' + id).addEventListener('change', renderResults); });
+  $('#reset').addEventListener('click', function () { $('#q').value = ''; ['fLevel', 'fCat', 'fState', 'fInc', 'fEl'].forEach(function (id) { $('#' + id).value = ''; }); renderResults(); });
+  $('#upBtn').addEventListener('click', upload);
+  $('#pfForm').addEventListener('submit', pfSave);
+  $('#pfForm').addEventListener('input', pfPreview);
+  window.addEventListener('hashchange', function () { var h = location.hash.slice(1) || 'dashboard'; if (h !== view) show(h, true); });
+
+  buildNav();
+  show(location.hash.slice(1) || 'dashboard', true);
+})();
+</script>
 </body>
 </html>
